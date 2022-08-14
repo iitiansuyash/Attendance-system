@@ -80,6 +80,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.min.js"></script>
     <script type="module">
+
+
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
         // TODO: Add SDKs for Firebase products that you want to use
@@ -98,20 +100,22 @@
 
         // Initialize Firebase
         const firebase = initializeApp(firebaseConfig);
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js";
+
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                // ...
+            } else {
+                window.location = "login.html"
+            }
+        });
 
         // Initialize Realtime Database and get a reference to the service
         import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-database.js";
         const database = getDatabase(firebase);
         // var database = firebase.database();
-        function timestamp(timestamp) {
-            var date = new Date(timestamp);
-            return "" + date.getDate() +
-                "/" + (date.getMonth() + 1) +
-                "/" + date.getFullYear() +
-                " " + date.getHours() +
-                ":" + date.getMinutes() +
-                ":" + date.getSeconds();
-        }
         get(ref(database, 'UsersData/o00QQSii6GRnYpgpF5RJaIVnxPf1')).then((snap) => {
             var data = snap.val()["Mine"]
             const tbody = document.getElementById("tbody");
